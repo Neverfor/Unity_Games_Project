@@ -1,9 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\TopDownController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Player.cs">
     <Files>
-      <File FileName="Assets\TopDownController.cs" Line="12" Column="65" />
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\ThirdPersonController.js" Line="144" Column="27" />
+      <File FileName="Assets\Player.cs" Line="16" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
