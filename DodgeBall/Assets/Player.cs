@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public class Player : MonoBehaviour {
-	public float speed = 500;
+	public float speed = 200;
 	public float maxSpeed = 1200;
 	public string horizontalInput;
 	public string verticalInput;
+	private FixedJoint ballJoint;
 	public string catchBallInput;
 
 	void Start() {
@@ -14,10 +15,24 @@ public class Player : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		Vector3 movement = new Vector3 (Input.GetAxisRaw (horizontalInput), 0.0f, Input.GetAxisRaw (verticalInput));
-		rigidbody.AddForce (movement * speed * Time.deltaTime);
-		//this.transform.position += Vector3.right * Time.fixedDeltaTime *  * speed;
-		//this.transform.position += Vector3.forward * Time.fixedDeltaTime * Input.GetAxisRaw(verticalInput) * speed;
+		Vector3 movement = new Vector3 (Input.GetAxisRaw (horizontalInput), 0.0f, Input.GetAxisRaw (verticalInput)) * Time.deltaTime * speed;
+		rigidbody.MovePosition(rigidbody.position + movement);
+		//rigidbody.AddForce (movement);
+
+		if(Input.GetKey(KeyCode.O))
+		{
+			if (ballJoint)
+			{
+				var ballBody = ballJoint.connectedBody;
+				if(ballBody.gameObject.tag == "ball")
+				{
+					ballBody.AddForce (Vector3.left * 3000 * Time.deltaTime, ForceMode.Impulse);
+
+					Destroy(ballJoint);
+					ballJoint = null;
+				}
+			}
+		}
 		
 	}
 
@@ -29,8 +44,10 @@ public class Player : MonoBehaviour {
 
 			if(Input.GetKey(KeyCode.L))
 			{
-				var joint = gameObject.AddComponent<FixedJoint>();
-				joint.connectedBody = col.rigidbody;
+				ballJoint = null;
+				ballJoint = gameObject.AddComponent<FixedJoint>();
+				ballJoint.connectedBody = col.rigidbody;
+				ballJoint.breakForce = 150;
 			}
 		}
 		
