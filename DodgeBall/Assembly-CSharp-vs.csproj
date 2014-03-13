@@ -51,6 +51,7 @@
      <Compile Include="Assets\Game Manager.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\ScoreManager.cs" />
+     <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
