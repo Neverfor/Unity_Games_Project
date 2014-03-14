@@ -1,24 +1,61 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(PlayerPhysics))]
 public class Player : MonoBehaviour {
-	public float speed = 200;
-	public float maxSpeed = 1200;
-	public string horizontalInput;
-	public string verticalInput;
 	private FixedJoint ballJoint;
 	public string catchBallInput;
 
-	void Start() {
-		if (horizontalInput == null || verticalInput == null)
-			throw new UnityException("One or more inputs aren't specified");
-	}
+	private PlayerPhysics playerPhysics;
 	
-	void FixedUpdate () {
-		Vector3 movement = new Vector3 (Input.GetAxisRaw (horizontalInput), 0.0f, Input.GetAxisRaw (verticalInput)) * Time.deltaTime * speed;
-		rigidbody.MovePosition(rigidbody.position + movement);
-		//rigidbody.AddForce (movement);
+	public string inputAxisHorizontal;
+	public string inputAxisVertical;
+	
+	public float speed = 10f;
+	public float acceleration = 30f;
+	
+	private float currentSpeedx;
+	private float targetSpeedx;
+	private float currentSpeedz;
+	private float targetSpeedz;
+	
+	private Vector3 amountToMove;
 
+	void Start() {
+		if (inputAxisHorizontal == null || inputAxisVertical == null)
+			throw new UnityException("One or more inputs aren't specified");
+		playerPhysics = GetComponent<PlayerPhysics>();
+	}
+
+	void Update () {
+		if (playerPhysics.movementStopped) {
+			targetSpeedx = 0f;
+			currentSpeedx = 0;
+			targetSpeedz = 0f;
+			currentSpeedz = 0;
+		}
+		targetSpeedx = Input.GetAxisRaw (inputAxisHorizontal) * speed;
+		targetSpeedz = Input.GetAxisRaw (inputAxisVertical) * speed;
+		currentSpeedx = IncrementTowards (currentSpeedx, targetSpeedx, acceleration);
+		currentSpeedz = IncrementTowards (currentSpeedz, targetSpeedz, acceleration);
+		amountToMove.y = 0;
+		amountToMove.x = currentSpeedx;
+		amountToMove.z = currentSpeedz;
+		playerPhysics.Move (amountToMove * Time.deltaTime);
+	}
+
+	private float IncrementTowards(float n, float target, float a){
+		if (n == target) {
+			return n;
+		} 
+		else {
+			float dir = Mathf.Sign (target-n);
+			n += a *Time.deltaTime*dir;
+			return (dir==Mathf.Sign (target-n))?n:target;
+		}
+	}
+
+	void FixedUpdate () {
 		if(Input.GetKey(KeyCode.O))
 		{
 			if (ballJoint)
@@ -41,8 +78,6 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "ball")
 		{
 			GameObject ball = col.gameObject;
-
-
 			if(Input.GetKey(KeyCode.L))
 			{
 				ballJoint = null;
