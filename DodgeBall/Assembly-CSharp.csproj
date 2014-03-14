@@ -49,6 +49,7 @@
      <Compile Include="Assets\Ball.cs" />
      <Compile Include="Assets\BallObject.cs" />
      <Compile Include="Assets\Game Manager.cs" />
+     <Compile Include="Assets\Highscores.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\ScoreManager.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />

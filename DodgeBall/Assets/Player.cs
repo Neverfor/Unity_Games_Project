@@ -42,6 +42,7 @@ public class Player : MonoBehaviour {
 		{
 			GameObject ball = col.gameObject;
 
+
 			if(Input.GetKey(KeyCode.L))
 			{
 				ballJoint = null;
@@ -49,7 +50,21 @@ public class Player : MonoBehaviour {
 				ballJoint.connectedBody = col.rigidbody;
 				ballJoint.breakForce = 150;
 			}
+			else if(GameManager.lastCollidedPlayer != this.gameObject)
+			{
+				ScoreManager.AddScoreToPlayer(name);
+				GameObject textP1 = GameObject.Find("Player 1 score");
+				TextMesh textMeshP1 = textP1.GetComponent<TextMesh>();
+				GameObject textP2 = GameObject.Find("Player 2 score");
+				TextMesh textMeshP2 = textP2.GetComponent<TextMesh>();
+
+				textMeshP1.text = "P1 score: " + ScoreManager.Player1Score;
+				textMeshP2.text = "P2 score: " + ScoreManager.Player2Score;
+			}
+
+			GameManager.lastCollidedPlayer = this.gameObject;
 		}
+
 		
 	}
 }

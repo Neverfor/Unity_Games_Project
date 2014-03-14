@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour {
 	//Gameplay
 	public static bool gamePuased = false;
 	public static Time pausedAt; 
+	public static string winner;
 
 	//Ball
 	public static float normalBallSpeed = 5.0F;
 	public static float maximumBallMagnitude = 18000.0F;
-	public static string lastCollidedObjectName = "None";
+	public static GameObject lastCollidedPlayer = null;
 
 
 	//Players 1-6
@@ -47,24 +48,10 @@ public class GameManager : MonoBehaviour {
 		mapSlideStrength = 0.0F;
 	}
 
-	//This method checks if the current collider is the same as the last one
-	//If it is not, than it will overwrite the lastCollidedObject field
-	public static bool IsColliderWithTheBallTheSameAsTheLastOne(string colliderName)
+	public static void EndGame(string winner)
 	{
-		if (!(lastCollidedObjectName.Equals (colliderName))) 
-		{
-			lastCollidedObjectName = colliderName;
-			Debug.Log ("The colliding object names are differnt.");
-			Debug.Log ("Updated lastColliderObjectName=" + lastCollidedObjectName);
-			return false;
-
-		} 
-
-		else 
-		{
-			Debug.Log ("Objects names are the same.");
-			return true;
-		}
+		GameManager.winner = winner;
+		Application.LoadLevel ("Highscores");
 	}
 	
 }
