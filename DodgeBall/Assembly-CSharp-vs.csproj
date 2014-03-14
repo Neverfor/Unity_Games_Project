@@ -50,6 +50,7 @@
      <Compile Include="Assets\BallObject.cs" />
      <Compile Include="Assets\Game Manager.cs" />
      <Compile Include="Assets\Player.cs" />
+     <Compile Include="Assets\PlayerPhysics.cs" />
      <Compile Include="Assets\ScoreManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

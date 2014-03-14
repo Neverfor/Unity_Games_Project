@@ -2,14 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Player.cs">
     <Files>
-      <File FileName="Assets\Ball.cs" Line="34" Column="3" />
-      <File FileName="Assets\Player.cs" Line="24" Column="16" />
+      <File FileName="Assets\PlayerPhysics.cs" Line="25" Column="2" />
+      <File FileName="Assets\Player.cs" Line="41" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Michael\Documents\GitHub\Unity_Kung-Fu_Project\DodgeBall\Assets\Player.cs" line="58" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
