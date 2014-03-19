@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(PlayerPhysics))]
 public class Player : MonoBehaviour {
-	private FixedJoint ballJoint;
+	public FixedJoint ballJoint;
 	public string catchBallInput;
 
 	private PlayerPhysics playerPhysics;
@@ -63,8 +63,7 @@ public class Player : MonoBehaviour {
 				var ballBody = ballJoint.connectedBody;
 				if(ballBody.gameObject.tag == "ball")
 				{
-					ballBody.AddForce (Vector3.left * 3000 * Time.deltaTime, ForceMode.Impulse);
-
+					ballBody.AddForce (playerPhysics.playerDir * 3000 * Time.deltaTime, ForceMode.Impulse);
 					Destroy(ballJoint);
 					ballJoint = null;
 				}
@@ -85,7 +84,7 @@ public class Player : MonoBehaviour {
 				ballJoint.connectedBody = col.rigidbody;
 				ballJoint.breakForce = 150;
 			}
-			else if(GameManager.lastCollidedPlayer != this.gameObject)
+			else if((GameManager.lastCollidedPlayer != this.gameObject)&& (GameManager.lastCollidedPlayer !=null))
 			{
 				ScoreManager.AddScoreToPlayer(name);
 				GameObject textP1 = GameObject.Find("Player 1 score");

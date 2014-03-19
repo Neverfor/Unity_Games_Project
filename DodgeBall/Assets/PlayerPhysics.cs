@@ -21,7 +21,7 @@ public class PlayerPhysics : MonoBehaviour {
 	Ray ray;
 	RaycastHit hit;
 	
-	private Vector3 playerDir;
+	public Vector3 playerDir;
 	
 	void Start () {
 		collider = GetComponent<BoxCollider>();
