@@ -5,6 +5,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	public FixedJoint ballJoint;
 	public string catchBallInput;
+    public int ballBreakForce = 350;
 
 	private PlayerPhysics playerPhysics;
 	
@@ -77,12 +78,12 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "ball")
 		{
 			GameObject ball = col.gameObject;
-			if(Input.GetKey(KeyCode.L))
+			if(Input.GetKey(KeyCode.L) && ballJoint == null)
 			{
 				ballJoint = null;
 				ballJoint = gameObject.AddComponent<FixedJoint>();
 				ballJoint.connectedBody = col.rigidbody;
-				ballJoint.breakForce = 150;
+                ballJoint.breakForce = ballBreakForce;
 			}
 			else if((GameManager.lastCollidedPlayer != this.gameObject)&& (GameManager.lastCollidedPlayer !=null))
 			{
