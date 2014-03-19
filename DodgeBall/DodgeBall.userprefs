@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Player.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Manager.cs">
     <Files>
-      <File FileName="Assets\PlayerPhysics.cs" Line="25" Column="2" />
-      <File FileName="Assets\Player.cs" Line="41" Column="13" />
+      <File FileName="Assets\Manager.cs" Line="57" Column="1" />
+      <File FileName="Assets\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\DodgeBall.cs" Line="1" Column="1" />
+      <File FileName="Assets\Manager.cs" Line="17" Column="24" />
+      <File FileName="Assets\PlayerPhysics.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,55 +1,105 @@
+using System;
 using UnityEngine;
-using System.Collections;
 
-[RequireComponent(typeof(PlayerPhysics))]
-public class Player : MonoBehaviour {
-	private PlayerPhysics playerPhysics;
+namespace Assets
+{
+    [RequireComponent(typeof(PlayerPhysics))]
+    [RequireComponent(typeof(Renderer))]
+    [RequireComponent(typeof(Collider))]
+    public class Player : MonoBehaviour {
+        private PlayerPhysics _playerPhysics; 
 
-	public string inputAxisHorizontal;
-	public string inputAxisVertical;
-	public string inputCatch;
+        public TextMesh Mesh;
+        public string PlayerName;
 
-	public float speed = 10f;
-	public float acceleration = 30f;
+        public int Score;
+
+        public string InputAxisHorizontal;
+		public string InputAxisVertical;
+		public string InputCatchKey;
+
+        public float Speed = 10f;
+        public float Acceleration = 30f;
+
+        private float _currentSpeedx;
+        private float _targetSpeedx;
+        private float _currentSpeedz;
+        private float _targetSpeedz;
 	
-	private float currentSpeedx;
-	private float targetSpeedx;
-	private float currentSpeedz;
-	private float targetSpeedz;
+        private Vector3 _amountToMove;
+        private Vector3 _moveDir;
 
-	private Vector3 amountToMove;
+        private const int MovementTolerance = 0;
 
-	void Start() {
-		playerPhysics = GetComponent<PlayerPhysics>();
-	}
-	
-	void Update () {
-		if (playerPhysics.movementStopped) {
-			targetSpeedx = 0f;
-			currentSpeedx = 0;
-			targetSpeedz = 0f;
-			currentSpeedz = 0;
-		}
-		targetSpeedx = Input.GetAxisRaw (inputAxisHorizontal) * speed;
-		targetSpeedz = Input.GetAxisRaw (inputAxisVertical) * speed;
-		currentSpeedx = IncrementTowards (currentSpeedx, targetSpeedx, acceleration);
-		currentSpeedz = IncrementTowards (currentSpeedz, targetSpeedz, acceleration);
-		amountToMove.y = 0;
-		amountToMove.x = currentSpeedx;
-		amountToMove.z = currentSpeedz;
-		playerPhysics.Move (amountToMove * Time.deltaTime);
-		if (1 == 1){
-		}
-	}
+        public Renderer Renderer;
+        public Collider Collider;
+         
+        public bool HasBall = false;
 
-	private float IncrementTowards(float n, float target, float a){
-		if (n == target) {
-			return n;
-		} 
-		else {
-			float dir = Mathf.Sign (target-n);
-			n += a *Time.deltaTime*dir;
-			return (dir==Mathf.Sign (target-n))?n:target;
-		}
-	}
+        void Start()
+        {
+            if (Mesh == null)throw new UnityException("A mesh is missing");
+            if (String.IsNullOrEmpty(PlayerName)) throw new UnityException("PlayerName must not be empty.");
+            Renderer = renderer;
+            Collider = collider;
+            if (InputAxisHorizontal == null || InputAxisVertical == null)
+                throw new UnityException("One or more inputs aren't specified");
+            _playerPhysics = GetComponent<PlayerPhysics>();
+        }
+
+        void Update () {
+            if (_playerPhysics.MovementStopped) {
+                _targetSpeedx = 0f;
+                _currentSpeedx = 0;
+                _targetSpeedz = 0f;
+                _currentSpeedz = 0;
+            }
+            _targetSpeedx = Input.GetAxisRaw (InputAxisHorizontal) * Speed;
+            _targetSpeedz = Input.GetAxisRaw (InputAxisVertical) * Speed;
+            _currentSpeedx = IncrementTowards (_currentSpeedx, _targetSpeedx, Acceleration);
+            _currentSpeedz = IncrementTowards (_currentSpeedz, _targetSpeedz, Acceleration);
+            _amountToMove.y = 0.05f;
+            _amountToMove.x = _currentSpeedx;
+            _amountToMove.z = _currentSpeedz;
+            //Debug.Log(_currentSpeedx);
+            _playerPhysics.Move (_amountToMove * Time.deltaTime);
+            if (HasBall && Input.GetButtonDown(InputCatchKey)) {
+                Shoot ();
+            }
+            if (_playerPhysics.PlayerDir.normalized != new Vector3())
+            {
+                _moveDir = _playerPhysics.PlayerDir.normalized;
+            }
+        }
+
+        private static float IncrementTowards(float n, float target, float a){
+            if (Math.Abs(n - target) < MovementTolerance) {
+                return n;
+            }
+            var dir = Mathf.Sign (target-n);
+            n += a *Time.deltaTime*dir;
+            return (Math.Abs(dir - Mathf.Sign(target - n)) < MovementTolerance) ? n : target;
+        }
+
+        private void Shoot(){ 
+            var ball = (DodgeBall) Instantiate (
+				Manager.Settings.Ball, 
+                new Vector3(_playerPhysics.Origin.x  + _moveDir.normalized.x, 
+                    1f,
+                    _playerPhysics.Origin.z + _moveDir.normalized.z),
+                Quaternion.identity);
+            if (_playerPhysics.PlayerDir.normalized == new Vector3(0, 1f, 0) || _playerPhysics.MovementStopped)
+                ball.Shoot(transform.position*-1 *0.5f, this);
+            else
+            {
+                ball.Shoot(_playerPhysics.PlayerDir.normalized, this);
+            }
+            HasBall = false;
+        }
+
+        public void SetBallControl()
+        {
+            HasBall = true; 
+        }
+    }
 }
