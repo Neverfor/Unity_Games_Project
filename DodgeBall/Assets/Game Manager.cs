@@ -10,10 +10,11 @@ public class GameManager : MonoBehaviour {
 	public static Time pausedAt; 
 	public static string winner;
 
-	//Ball
+	//Ball and players
 	public static float normalBallSpeed = 5.0F;
 	public static float maximumBallMagnitude = 18000.0F;
 	public static GameObject lastCollidedPlayer = null;
+    public static GameObject currentHolder = null;
 
 
 	//Players 1-6

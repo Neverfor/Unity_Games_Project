@@ -67,6 +67,7 @@ public class Player : MonoBehaviour {
 					ballBody.AddForce (playerPhysics.playerDir * 3000 * Time.deltaTime, ForceMode.Impulse);
 					Destroy(ballJoint);
 					ballJoint = null;
+                    GameManager.currentHolder = null;
 				}
 			}
 		}
@@ -78,19 +79,30 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "ball")
 		{
 			GameObject ball = col.gameObject;
-			if(Input.GetKey(KeyCode.L) && ballJoint == null)
+			if(Input.GetKey(KeyCode.L) && ballJoint == null && GameManager.currentHolder == null)
 			{
-				ballJoint = null;
 				ballJoint = gameObject.AddComponent<FixedJoint>();
 				ballJoint.connectedBody = col.rigidbody;
                 ballJoint.breakForce = ballBreakForce;
+                GameManager.currentHolder = this.gameObject;
 			}
-			else if((GameManager.lastCollidedPlayer != this.gameObject)&& (GameManager.lastCollidedPlayer !=null))
+			else if((GameManager.lastCollidedPlayer != this.gameObject)&& (GameManager.lastCollidedPlayer != null))
 			{
-				ScoreManager.AddScoreToPlayer(name);
+                string scoredPlayerName = "";
+                if (name.Equals("Player 1"))
+                {
+                    scoredPlayerName = "Player 2";
+                }
+                if (name.Equals("Player 2"))
+                {
+                    scoredPlayerName = "Player 1";
+                }
+
+
+                ScoreManager.AddScoreToPlayer(scoredPlayerName);
 				GameObject textP1 = GameObject.Find("Player 1 score");
-				TextMesh textMeshP1 = textP1.GetComponent<TextMesh>();
 				GameObject textP2 = GameObject.Find("Player 2 score");
+                TextMesh textMeshP1 = textP1.GetComponent<TextMesh>();
 				TextMesh textMeshP2 = textP2.GetComponent<TextMesh>();
 
 				textMeshP1.text = "P1 score: " + ScoreManager.Player1Score;

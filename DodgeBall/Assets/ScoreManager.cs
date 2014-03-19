@@ -24,12 +24,10 @@ public static class ScoreManager {
 			Player2Score = Player2Score+1;
 
 		if (Player1Score == 6)
-			GameManager.EndGame ("Player 2");
-
-		else if (Player2Score == 6)
 			GameManager.EndGame ("Player 1");
 
-
+		else if (Player2Score == 6)
+			GameManager.EndGame ("Player 2");
 	}
 
 	public static void SubstractScoreFromPlayer (string playerName)
