@@ -61,21 +61,15 @@ namespace Assets
             _amountToMove.y = 0.05f;
             _amountToMove.x = _currentSpeedx;
             _amountToMove.z = _currentSpeedz;
-            //Debug.Log(_currentSpeedx);
             _playerPhysics.Move (_amountToMove * Time.deltaTime);
-            if (HasBall && Input.GetButtonDown(InputCatchKey)) {
+			_moveDir = _playerPhysics.PlayerDir.normalized;
+            if (HasBall && Input.GetButtonDown(InputCatchKey))
                 Shoot ();
-            }
-            if (_playerPhysics.PlayerDir.normalized != new Vector3())
-            {
-                _moveDir = _playerPhysics.PlayerDir.normalized;
-            }
         }
 
         private static float IncrementTowards(float n, float target, float a){
-            if (Math.Abs(n - target) < MovementTolerance) {
+            if (Math.Abs(n - target) < MovementTolerance)
                 return n;
-            }
             var dir = Mathf.Sign (target-n);
             n += a *Time.deltaTime*dir;
             return (Math.Abs(dir - Mathf.Sign(target - n)) < MovementTolerance) ? n : target;
@@ -88,12 +82,11 @@ namespace Assets
                     1f,
                     _playerPhysics.Origin.z + _moveDir.normalized.z),
                 Quaternion.identity);
-            if (_playerPhysics.PlayerDir.normalized == new Vector3(0, 1f, 0) || _playerPhysics.MovementStopped)
-                ball.Shoot(transform.position*-1 *0.5f, this);
+			ball.CurrentlyPickupAble = false;
+            if (_playerPhysics.PlayerDir.normalized == new Vector3(0,1f,0) || _playerPhysics.MovementStopped)
+				ball.Shoot ((this.transform.position*-1).normalized, this);
             else
-            {
                 ball.Shoot(_playerPhysics.PlayerDir.normalized, this);
-            }
             HasBall = false;
         }
 

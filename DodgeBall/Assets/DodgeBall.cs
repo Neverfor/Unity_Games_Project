@@ -23,8 +23,8 @@ namespace Assets
         void Update ()
         {
             _currentSpeed = rigidbody.velocity.magnitude;
-            if (_currentSpeed <= _maximumPickupSpeed != CurrentlyPickupAble)
-                SetPickup(_currentSpeed <= _maximumPickupSpeed);
+            if (_currentSpeed <= _maximumPickupSpeed)
+                SetPickup(true);
         }
 
         public void Shoot(Vector3 direction, Player origin)
@@ -38,7 +38,7 @@ namespace Assets
         }
 
         public void SetPickup(bool pickupable)
-        {
+		{
             renderer.material.color = pickupable ? Color.green : 
                 OriginPlayer != null ?
                     OriginPlayer.Renderer.material.color
@@ -49,15 +49,34 @@ namespace Assets
 
         void OnCollisionEnter(Collision coll)
         {
-            var hitPlayer = coll.gameObject.GetComponent<Player>();
-            if (hitPlayer == null) return;
-            if (!CurrentlyPickupAble)
-            {
-				if (hitPlayer == OriginPlayer) return;
-				Manager.Settings.IncreaseScore(OriginPlayer);
-			}
-			hitPlayer.SetBallControl();
-            Destroy(gameObject);
+			OnHit (coll);
         }
+
+		void OnCollisionStay(Collision coll){
+			OnHit (coll);
+		}
+
+		void OnHit(Collision coll){
+			var hitPlayer = coll.gameObject.GetComponent<Player>();
+			if (!CurrentlyPickupAble) {
+				if (hitPlayer != null) {
+					if (hitPlayer != OriginPlayer) {
+						Manager.Settings.IncreaseScore (OriginPlayer);
+						hitPlayer.SetBallControl ();
+						Destroy (gameObject);
+					}
+				} 
+				else {
+					if (!coll.collider.name.Equals ("Ground"))
+						SetPickup (true);
+				}
+			} 
+			else {
+				if (hitPlayer != null) {
+					hitPlayer.SetBallControl ();
+					Destroy (gameObject);
+				}
+			}
+		}
     }
 }
