@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
 	public static float maximumBallMagnitude = 18000.0F;
 	public static GameObject lastCollidedPlayer = null;
     public static GameObject currentHolder = null;
+    public static Vector3 ballStartingPosition = new Vector3(0, 1.48F, 0);
+    public static float ballPossesionTime = 0;
 
 
 	//Players 1-6
