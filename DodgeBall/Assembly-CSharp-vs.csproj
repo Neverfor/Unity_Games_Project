@@ -48,11 +48,14 @@
   <ItemGroup>
      <Compile Include="Assets\DodgeBall.cs" />
      <Compile Include="Assets\ExtraBallPowerUp.cs" />
+     <Compile Include="Assets\FastRotate.cs" />
+     <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\Manager.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\PlayerPhysics.cs" />
      <Compile Include="Assets\PowerUp.cs" />
      <Compile Include="Assets\PowerUpSpawner.cs" />
+     <Compile Include="Assets\Rotate.cs" />
      <Compile Include="Assets\SpeedPowerUp.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
   </ItemGroup>
