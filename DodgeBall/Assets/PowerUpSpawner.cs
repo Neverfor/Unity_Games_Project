@@ -23,7 +23,7 @@ namespace Assets
 
 			int randIndex = Random.Range(0, powerups.Count);
 
-			Instantiate(powerups[randIndex], new Vector3(randx, 1, randz), Quaternion.identity);
+			Instantiate(powerups[randIndex], new Vector3(randx, 4, randz), Quaternion.identity);
 		}
 	}
 }
