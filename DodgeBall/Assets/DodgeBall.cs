@@ -10,7 +10,9 @@ namespace Assets
         private float _maximumPickupSpeed = 10f;
         private float _currentSpeed;
 
-        public Player OriginPlayer;
+        public GameObject OriginPlayer;
+
+		private float _minPickUpTime = 0;
 
         public bool CurrentlyPickupAble = false;
 	
@@ -27,21 +29,23 @@ namespace Assets
                 SetPickup(true);
         }
 
-        public void Shoot(Vector3 direction, Player origin)
+        public void Shoot(Vector3 direction, GameObject origin)
         {
             OriginPlayer = origin;
             renderer.material.color = 
-                OriginPlayer.Renderer.material.GetColor("_Color");
+				OriginPlayer.GetComponent<Player>().Renderer.material.GetColor("_Color");
             rigidbody.AddForce(
                 direction * 
                 DefaultBallSpeed * 100f);
+			CurrentlyPickupAble = false;
+			_minPickUpTime = Time.time + 0.5f;
         }
 
         public void SetPickup(bool pickupable)
 		{
             renderer.material.color = pickupable ? Color.green : 
                 OriginPlayer != null ?
-                    OriginPlayer.Renderer.material.color
+                    OriginPlayer.GetComponent<Player>().Renderer.material.color
                     :
                     Color.red;
             CurrentlyPickupAble = pickupable;
@@ -57,24 +61,35 @@ namespace Assets
 		}
 
 		void OnHit(Collision coll){
-			var hitPlayer = coll.gameObject.GetComponent<Player>();
-			if (!CurrentlyPickupAble) {
-				if (hitPlayer != null) {
-					if (hitPlayer != OriginPlayer) {
-						Manager.Settings.IncreaseScore (OriginPlayer);
-						hitPlayer.SetBallControl ();
-						Destroy (gameObject);
-					}
-				} 
-				else {
-					if (!coll.collider.name.Equals ("Ground"))
-						SetPickup (true);
+
+			if(coll.gameObject.tag == "Player")
+			{
+				var playerComp = coll.gameObject.GetComponent<Player>();
+
+				if(coll.gameObject == OriginPlayer && Time.time <= _minPickUpTime)
+				{
+					return;
 				}
-			} 
-			else {
-				if (hitPlayer != null) {
-					hitPlayer.SetBallControl ();
-					Destroy (gameObject);
+
+				if (!CurrentlyPickupAble) 
+				{
+					if (coll.gameObject != OriginPlayer) 
+					{
+						Manager.Settings.IncreaseScore(OriginPlayer.GetComponent<Player>());
+						playerComp.SetBallControl();
+						Destroy (gameObject);
+						return;
+					}
+				}
+
+				playerComp.SetBallControl ();
+				Destroy (gameObject);
+			}
+			else
+			{
+				if (!coll.collider.name.Equals ("Ground"))
+				{
+					SetPickup (true);
 				}
 			}
 		}

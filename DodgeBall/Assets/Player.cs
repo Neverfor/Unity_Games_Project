@@ -29,6 +29,8 @@ namespace Assets
         private Vector3 _amountToMove;
         private Vector3 _moveDir;
 
+		private int _hasBallCount = 0;
+
         private const int MovementTolerance = 0;
 
         public Renderer Renderer;
@@ -63,7 +65,7 @@ namespace Assets
             _amountToMove.z = _currentSpeedz;
             _playerPhysics.Move (_amountToMove * Time.deltaTime);
 			_moveDir = _playerPhysics.PlayerDir.normalized;
-            if (HasBall && Input.GetButtonDown(InputCatchKey))
+            if (_hasBallCount > 0 && Input.GetButtonDown(InputCatchKey))
                 Shoot ();
         }
 
@@ -76,23 +78,25 @@ namespace Assets
         }
 
         private void Shoot(){ 
-            var ball = (DodgeBall) Instantiate (
-				Manager.Settings.Ball, 
-                new Vector3(_playerPhysics.Origin.x  + _moveDir.normalized.x, 
-                    1f,
-                    _playerPhysics.Origin.z + _moveDir.normalized.z),
-                Quaternion.identity);
-			ball.CurrentlyPickupAble = false;
-            if (_playerPhysics.PlayerDir.normalized == new Vector3(0,1f,0) || _playerPhysics.MovementStopped)
-				ball.Shoot ((this.transform.position*-1).normalized, this);
-            else
-                ball.Shoot(_playerPhysics.PlayerDir.normalized, this);
-            HasBall = false;
+	            var ball = (DodgeBall) Instantiate (
+					Manager.Settings.Ball, 
+	                new Vector3(_playerPhysics.Origin.x  + _moveDir.normalized.x, 
+	                    1f,
+	                    _playerPhysics.Origin.z + _moveDir.normalized.z),
+	                Quaternion.identity);
+				ball.CurrentlyPickupAble = false;
+	            if (_playerPhysics.PlayerDir.normalized == new Vector3(0,1f,0) || _playerPhysics.MovementStopped)
+					ball.Shoot ((this.transform.position*-1).normalized, gameObject);
+	            else
+					ball.Shoot(_playerPhysics.PlayerDir.normalized, gameObject);
+
+			_hasBallCount--;
+
         }
 
         public void SetBallControl()
         {
-            HasBall = true; 
+			_hasBallCount++; 
         }
     }
 }
