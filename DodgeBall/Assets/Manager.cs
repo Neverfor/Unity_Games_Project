@@ -58,18 +58,25 @@ using Assets;
         {
             if (seeTheBallHolder)
             {
+                /*
                 var p1 = GameObject.FindGameObjectWithTag("Player1");
                 var p2 = GameObject.Find("Player2");
                 if ("p1 heeft de bal".Equals("player 1 has the ball"))
                 {
-                    GameObject.Find("ArrowP1").active = true;
-                    GameObject.Find("ArrowP2").active = false;
+                    GameObject.Find("ArrowP1").renderer.enabled = true;
+                    GameObject.Find("ArrowP2").renderer.enabled = false;
                 }
                 if ("p2 heeft de bal".Equals("player 2 has the ball"))
                 {
-                    GameObject.Find("ArrowP1").camera.enabled = false;
-                    GameObject.Find("ArrowP2").camera.enabled = true;
+                    GameObject.Find("ArrowP1").renderer.enabled = false;
+                    GameObject.Find("ArrowP2").renderer.enabled = true;
                 }
+                 * */
+            }
+            else
+            {
+                GameObject.Find("ArrowP1").renderer.enabled = false;
+                GameObject.Find("ArrowP2").renderer.enabled = false;
             }
           
         }
